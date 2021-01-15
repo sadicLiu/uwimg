@@ -144,33 +144,22 @@ void hsv_to_rgb(image im)
                 B = 0;
             } else
             {
-                H_ = H * 6 < 6 ? H * 6 - 6 : H * 6;
-                if (H_ <= 1.0)
+                if (H >= (5.f / 6.f))
                 {
                     R = V;
-                    if (H_ > 0.)
+                    H_ = (H - 1.f) * 6.f;
+                    if (H_ > 0)
                     {
                         B = m;
                         G = H_ * C + B;
                     } else
                     {
                         G = m;
-                        B = G - H_ * C;
+                        B = -(H_ * C - G);
                     }
-                } else if (H_ <= 3.0)
+                } else if (H >= 1.f / 2.f)
                 {
-                    G = V;
-                    if (H_ > 2)
-                    {
-                        R = m;
-                        B = (H_ - 2) * C + R;
-                    } else
-                    {
-                        B = m;
-                        R = -((H_ - 2) * C - B);
-                    }
-                } else
-                {
+                    H_ = H * 6.f;
                     B = V;
                     if (H_ > 4)
                     {
@@ -181,6 +170,19 @@ void hsv_to_rgb(image im)
                         R = m;
                         G = -((H_ - 4) * C - R);
                     }
+                } else
+                {
+                    H_ = H * 6.f;
+                    G = V;
+                    if (H_ > 2)
+                    {
+                        R = m;
+                        B = (H_ - 2) * C + R;
+                    } else
+                    {
+                        B = m;
+                        R = -((H_ - 2) * C - B);
+                    }
                 }
             }
             set_pixel(im, i, j, 0, R);
@@ -189,12 +191,4 @@ void hsv_to_rgb(image im)
         }
     }
 
-}
-
-void main()
-{
-    image im = load_image("data/dog.jpg");
-    rgb_to_hsv(im);
-    save_image(im, "test_hsv.jpg");
-    free_image(im);
 }
