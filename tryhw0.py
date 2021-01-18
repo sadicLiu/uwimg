@@ -42,7 +42,8 @@ flag = True
 if flag:
     im = load_image("data/dog.jpg")
     rgb_to_hsv(im)
-    shift_image(im, 1, .2)
+    # shift_image(im, 1, .2)
+    scale_image(im, 1, 2)
     clamp_image(im)
     hsv_to_rgb(im)
-    save_image(im, "dog_saturated")
+    save_image(im, "dog_saturated2")
